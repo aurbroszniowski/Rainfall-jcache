@@ -24,7 +24,6 @@ import org.rainfall.SequenceGenerator;
 import org.rainfall.TestException;
 import org.rainfall.jcache.CacheConfig;
 import org.rainfall.jcache.statistics.JCacheResult;
-import org.rainfall.statistics.StatisticsObserver;
 import org.rainfall.statistics.StatisticsObserversFactory;
 import org.rainfall.statistics.Task;
 
@@ -43,7 +42,8 @@ import static org.rainfall.jcache.statistics.JCacheResult.PUT;
 public class PutOperation<K, V> extends Operation {
 
   @Override
-  public void exec(final Map<Class<? extends Configuration>, Configuration> configurations, final List<AssertionEvaluator> assertions) throws TestException {
+  public void exec(final StatisticsObserversFactory statisticsObserversFactory, final Map<Class<? extends Configuration>,
+      Configuration> configurations, final List<AssertionEvaluator> assertions) throws TestException {
     CacheConfig<K, V> cacheConfig = (CacheConfig<K, V>)configurations.get(CacheConfig.class);
     SequenceGenerator sequenceGenerator = cacheConfig.getSequenceGenerator();
     final long next = sequenceGenerator.next();
@@ -53,20 +53,19 @@ public class PutOperation<K, V> extends Operation {
       final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
       final ObjectGenerator<V> valueGenerator = cacheConfig.getValueGenerator();
       for (final Cache<K, V> cache : caches) {
-        StatisticsObserver<JCacheResult> observer = StatisticsObserversFactory.getInstance()
-            .getStatisticObserver(cache.getName(), JCacheResult.class);
-        observer.measure(new Task<JCacheResult>() {
+        statisticsObserversFactory.getStatisticObserver(cache.getName(), JCacheResult.class)
+            .measure(new Task<JCacheResult>() {
 
-          @Override
-          public JCacheResult definition() throws Exception {
-            try {
-              cache.put(keyGenerator.generate(next), valueGenerator.generate(next));
-            } catch (Exception e) {
-              return EXCEPTION;
-            }
-            return PUT;
-          }
-        });
+              @Override
+              public JCacheResult definition() throws Exception {
+                try {
+                  cache.put(keyGenerator.generate(next), valueGenerator.generate(next));
+                } catch (Exception e) {
+                  return EXCEPTION;
+                }
+                return PUT;
+              }
+            });
       }
     }
   }
