@@ -36,8 +36,8 @@ import javax.cache.Cache;
 public class CacheConfig<K, V> extends Configuration {
 
   private List<Cache<K, V>> caches = new ArrayList<Cache<K, V>>();
-  private ObjectGenerator keyGenerator = null;
-  private ObjectGenerator valueGenerator = null;
+  private ObjectGenerator<K> keyGenerator = null;
+  private ObjectGenerator<V> valueGenerator = null;
   private IterationSequenceGenerator sequenceGenerator = null;
   private RangeMap<OperationWeight.OPERATION> weights = new RangeMap<OperationWeight.OPERATION>();
   private PseudoRandom randomizer = new PseudoRandom();
@@ -51,7 +51,7 @@ public class CacheConfig<K, V> extends Configuration {
     return this;
   }
 
-  public CacheConfig<K, V> using(final ObjectGenerator keyGenerator, final ObjectGenerator valueGenerator) {
+  public CacheConfig<K, V> using(final ObjectGenerator<K> keyGenerator, final ObjectGenerator<V> valueGenerator) {
     if (this.keyGenerator != null) {
       throw new IllegalStateException("KeyGenerator already chosen.");
     }
@@ -91,11 +91,11 @@ public class CacheConfig<K, V> extends Configuration {
     return caches;
   }
 
-  public ObjectGenerator getKeyGenerator() {
+  public ObjectGenerator<K> getKeyGenerator() {
     return keyGenerator;
   }
 
-  public ObjectGenerator getValueGenerator() {
+  public ObjectGenerator<V> getValueGenerator() {
     return valueGenerator;
   }
 

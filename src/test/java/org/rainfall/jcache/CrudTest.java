@@ -63,7 +63,7 @@ public class CrudTest {
             .setExpiryPolicyFactory(ModifiedExpiryPolicy.factoryOf(new Duration(TimeUnit.MINUTES, 10)))
             .setStoreByValue(true)));
 
-    CacheConfig<String, Byte> cacheConfig = CacheConfig.<String, Byte>cacheConfig()
+    CacheConfig<String, Byte[]> cacheConfig = CacheConfig.<String, Byte[]>cacheConfig()
         .caches(one)
         .using(StringGenerator.fixedLength(10), ByteArrayGenerator.fixedLength(128))
         .sequentially()
