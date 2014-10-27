@@ -24,6 +24,7 @@ import org.rainfall.SequenceGenerator;
 import org.rainfall.TestException;
 import org.rainfall.jcache.CacheConfig;
 import org.rainfall.jcache.statistics.JCacheResult;
+import org.rainfall.statistics.Result;
 import org.rainfall.statistics.StatisticsObserversFactory;
 import org.rainfall.statistics.Task;
 
@@ -53,11 +54,11 @@ public class PutOperation<K, V> extends Operation {
       final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
       final ObjectGenerator<V> valueGenerator = cacheConfig.getValueGenerator();
       for (final Cache<K, V> cache : caches) {
-        statisticsObserversFactory.getStatisticObserver(cache.getName(), JCacheResult.class)
-            .measure(new Task<JCacheResult>() {
+        statisticsObserversFactory.getStatisticObserver(cache.getName(), JCacheResult.values())
+            .measure(new Task() {
 
               @Override
-              public JCacheResult definition() throws Exception {
+              public Result definition() throws Exception {
                 try {
                   cache.put(keyGenerator.generate(next), valueGenerator.generate(next));
                 } catch (Exception e) {

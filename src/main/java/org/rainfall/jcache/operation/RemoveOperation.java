@@ -8,6 +8,7 @@ import org.rainfall.SequenceGenerator;
 import org.rainfall.TestException;
 import org.rainfall.jcache.CacheConfig;
 import org.rainfall.jcache.statistics.JCacheResult;
+import org.rainfall.statistics.Result;
 import org.rainfall.statistics.StatisticsObserversFactory;
 import org.rainfall.statistics.Task;
 
@@ -37,11 +38,11 @@ public class RemoveOperation<K, V> extends Operation {
       List<Cache<K, V>> caches = cacheConfig.getCaches();
       final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
       for (final Cache<K, V> cache : caches) {
-        statisticsObserversFactory.getStatisticObserver(cache.getName(), JCacheResult.class)
-            .measure(new Task<JCacheResult>() {
+        statisticsObserversFactory.getStatisticObserver(cache.getName(), JCacheResult.values())
+            .measure(new Task() {
 
               @Override
-              public JCacheResult definition() throws Exception {
+              public Result definition() throws Exception {
                 boolean removed;
                 try {
                   removed = cache.remove(keyGenerator.generate(next));

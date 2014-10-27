@@ -37,21 +37,21 @@ public class CacheConfig<K, V> extends Configuration {
 
   private List<Cache<K, V>> caches = new ArrayList<Cache<K, V>>();
   private ObjectGenerator keyGenerator = null;
-  private ObjectGenerator  valueGenerator = null;
+  private ObjectGenerator valueGenerator = null;
   private IterationSequenceGenerator sequenceGenerator = null;
   private RangeMap<OperationWeight.OPERATION> weights = new RangeMap<OperationWeight.OPERATION>();
   private PseudoRandom randomizer = new PseudoRandom();
 
-  public static <K,V> CacheConfig<K,V> cacheConfig() {
-    return new CacheConfig<K,V>();
+  public static <K, V> CacheConfig<K, V> cacheConfig() {
+    return new CacheConfig<K, V>();
   }
 
-  public CacheConfig<K,V> caches(final Cache<K, V>... caches) {
+  public CacheConfig<K, V> caches(final Cache<K, V>... caches) {
     Collections.addAll(this.caches, caches);
     return this;
   }
 
-  public CacheConfig<K,V> using(final ObjectGenerator  keyGenerator, final ObjectGenerator  valueGenerator) {
+  public CacheConfig<K, V> using(final ObjectGenerator keyGenerator, final ObjectGenerator valueGenerator) {
     if (this.keyGenerator != null) {
       throw new IllegalStateException("KeyGenerator already chosen.");
     }
@@ -64,7 +64,7 @@ public class CacheConfig<K, V> extends Configuration {
     return this;
   }
 
-  public CacheConfig<K,V> sequentially() {
+  public CacheConfig<K, V> sequentially() {
     if (this.sequenceGenerator != null) {
       throw new IllegalStateException("SequenceGenerator already chosen.");
     }
@@ -72,7 +72,7 @@ public class CacheConfig<K, V> extends Configuration {
     return this;
   }
 
-  public CacheConfig<K,V> weights(OperationWeight... operationWeights) {
+  public CacheConfig<K, V> weights(OperationWeight... operationWeights) {
     double totalWeight = 0;
     for (OperationWeight weight : operationWeights) {
       totalWeight += weight.getWeight();
@@ -91,11 +91,11 @@ public class CacheConfig<K, V> extends Configuration {
     return caches;
   }
 
-  public ObjectGenerator  getKeyGenerator() {
+  public ObjectGenerator getKeyGenerator() {
     return keyGenerator;
   }
 
-  public ObjectGenerator  getValueGenerator() {
+  public ObjectGenerator getValueGenerator() {
     return valueGenerator;
   }
 
