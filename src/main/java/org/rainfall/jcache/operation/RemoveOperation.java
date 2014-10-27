@@ -30,6 +30,7 @@ public class RemoveOperation<K, V> extends Operation {
   @Override
   public void exec(final StatisticsObserversFactory statisticsObserversFactory, final Map<Class<? extends Configuration>,
       Configuration> configurations, final List<AssertionEvaluator> assertions) throws TestException {
+
     CacheConfig<K, V> cacheConfig = (CacheConfig<K, V>)configurations.get(CacheConfig.class);
     SequenceGenerator sequenceGenerator = cacheConfig.getSequenceGenerator();
     final long next = sequenceGenerator.next();

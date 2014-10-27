@@ -26,7 +26,6 @@ import org.rainfall.configuration.ConcurrencyConfig;
 import org.rainfall.configuration.ReportingConfig;
 import org.rainfall.generator.ByteArrayGenerator;
 import org.rainfall.generator.StringGenerator;
-import org.rainfall.jcache.statistics.JCacheResult;
 import org.rainfall.utils.SystemTest;
 
 import java.util.concurrent.TimeUnit;
@@ -73,13 +72,12 @@ public class CrudTest {
     ReportingConfig reporting = ReportingConfig.reportingConfig(ReportingConfig.text(), ReportingConfig.html());
 
     Scenario scenario = Scenario.scenario("Cache load")
-//          .using(iteration(from(0), sequentially(), times(10000)))
         .exec(put())
         .exec(get())
         .exec(remove());
 
     Runner.setUp(scenario)
-        .executed(times(5000000), nothingFor(10, seconds))
+        .executed(times(10000000), nothingFor(10, seconds))
         .config(cacheConfig, concurrency, reporting)
 //          .assertion(latencyTime(), isLessThan(1, seconds))
         .start();
