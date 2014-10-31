@@ -40,8 +40,8 @@ public class GetOperation<K, V> extends Operation {
       List<Cache<K, V>> caches = cacheConfig.getCaches();
       final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
       for (final Cache<K, V> cache : caches) {
-        statisticsObserversFactory.getStatisticObserver(cache.getName(), JCacheResult.values())
-            .measure(new Task() {
+        statisticsObserversFactory
+            .measure(cache.getName(), JCacheResult.values(), new Task() {
 
               @Override
               public Result definition() throws Exception {

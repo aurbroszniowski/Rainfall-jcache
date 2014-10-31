@@ -55,8 +55,8 @@ public class PutOperation<K, V> extends Operation {
       final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
       final ObjectGenerator<V> valueGenerator = cacheConfig.getValueGenerator();
       for (final Cache<K, V> cache : caches) {
-        statisticsObserversFactory.getStatisticObserver(cache.getName(), JCacheResult.values())
-            .measure(new Task() {
+        statisticsObserversFactory
+            .measure(cache.getName(), JCacheResult.values(), new Task() {
 
               @Override
               public Result definition() throws Exception {
