@@ -25,7 +25,7 @@ import org.rainfall.TestException;
 import org.rainfall.jcache.CacheConfig;
 import org.rainfall.jcache.statistics.JCacheResult;
 import org.rainfall.statistics.Result;
-import org.rainfall.statistics.StatisticsObserversFactory;
+import org.rainfall.statistics.StatisticsObserversHolder;
 import org.rainfall.statistics.Task;
 
 import java.util.List;
@@ -43,7 +43,7 @@ import static org.rainfall.jcache.statistics.JCacheResult.PUT;
 public class PutOperation<K, V> extends Operation {
 
   @Override
-  public void exec(final StatisticsObserversFactory statisticsObserversFactory, final Map<Class<? extends Configuration>,
+  public void exec(final StatisticsObserversHolder statisticsObserversHolder, final Map<Class<? extends Configuration>,
       Configuration> configurations, final List<AssertionEvaluator> assertions) throws TestException {
 
     CacheConfig<K, V> cacheConfig = (CacheConfig<K, V>)configurations.get(CacheConfig.class);
@@ -55,7 +55,7 @@ public class PutOperation<K, V> extends Operation {
       final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
       final ObjectGenerator<V> valueGenerator = cacheConfig.getValueGenerator();
       for (final Cache<K, V> cache : caches) {
-        statisticsObserversFactory
+        statisticsObserversHolder
             .measure(cache.getName(), JCacheResult.values(), new Task() {
 
               @Override
