@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.rainfall.jcache;
+package io.rainfall.jcache;
 
 import org.junit.Test;
 

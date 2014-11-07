@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package org.rainfall.jcache.statistics;
+package io.rainfall.jcache.statistics;
 
-import org.rainfall.statistics.Result;
+import io.rainfall.statistics.Result;
 
 /**
  * @author Aurelien Broszniowski

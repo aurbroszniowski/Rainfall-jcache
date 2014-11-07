@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package org.rainfall.jcache;
+package io.rainfall.jcache;
 
+import io.rainfall.generator.ByteArrayGenerator;
 import org.ehcache.jcache.JCacheConfiguration;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.rainfall.Runner;
-import org.rainfall.Scenario;
-import org.rainfall.SyntaxException;
-import org.rainfall.configuration.ConcurrencyConfig;
-import org.rainfall.configuration.ReportingConfig;
-import org.rainfall.generator.ByteArrayGenerator;
-import org.rainfall.generator.StringGenerator;
-import org.rainfall.utils.SystemTest;
+import io.rainfall.Runner;
+import io.rainfall.Scenario;
+import io.rainfall.SyntaxException;
+import io.rainfall.configuration.ConcurrencyConfig;
+import io.rainfall.configuration.ReportingConfig;
+import io.rainfall.generator.StringGenerator;
+import io.rainfall.utils.SystemTest;
 
 import java.util.concurrent.TimeUnit;
 
@@ -37,16 +37,16 @@ import javax.cache.expiry.Duration;
 import javax.cache.expiry.ModifiedExpiryPolicy;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
-import static org.rainfall.execution.Executions.nothingFor;
-import static org.rainfall.execution.Executions.times;
-import static org.rainfall.jcache.JCacheOperations.get;
-import static org.rainfall.jcache.JCacheOperations.put;
-import static org.rainfall.jcache.JCacheOperations.remove;
-import static org.rainfall.jcache.operation.OperationWeight.OPERATION.GET;
-import static org.rainfall.jcache.operation.OperationWeight.OPERATION.PUT;
-import static org.rainfall.jcache.operation.OperationWeight.OPERATION.REMOVE;
-import static org.rainfall.jcache.operation.OperationWeight.operation;
-import static org.rainfall.unit.TimeDivision.seconds;
+import static io.rainfall.execution.Executions.nothingFor;
+import static io.rainfall.execution.Executions.times;
+import static io.rainfall.jcache.JCacheOperations.get;
+import static io.rainfall.jcache.JCacheOperations.put;
+import static io.rainfall.jcache.JCacheOperations.remove;
+import static io.rainfall.jcache.operation.OperationWeight.OPERATION.GET;
+import static io.rainfall.jcache.operation.OperationWeight.OPERATION.PUT;
+import static io.rainfall.jcache.operation.OperationWeight.OPERATION.REMOVE;
+import static io.rainfall.jcache.operation.OperationWeight.operation;
+import static io.rainfall.unit.TimeDivision.seconds;
 
 /**
  * @author Aurelien Broszniowski

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package org.rainfall.jcache;
+package io.rainfall.jcache;
 
-import org.rainfall.Configuration;
-import org.rainfall.ObjectGenerator;
-import org.rainfall.generator.IterationSequenceGenerator;
-import org.rainfall.jcache.operation.OperationWeight;
-import org.rainfall.utils.PseudoRandom;
-import org.rainfall.utils.RangeMap;
+import io.rainfall.Configuration;
+import io.rainfall.ObjectGenerator;
+import io.rainfall.generator.IterationSequenceGenerator;
+import io.rainfall.jcache.operation.OperationWeight;
+import io.rainfall.utils.PseudoRandom;
+import io.rainfall.utils.RangeMap;
 
 import java.util.ArrayList;
 import java.util.Collections;

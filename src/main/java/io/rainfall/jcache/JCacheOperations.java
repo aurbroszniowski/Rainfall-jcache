@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package org.rainfall.jcache;
+package io.rainfall.jcache;
 
-import org.rainfall.jcache.operation.GetOperation;
-import org.rainfall.jcache.operation.PutOperation;
-import org.rainfall.jcache.operation.RemoveOperation;
+import io.rainfall.jcache.operation.GetOperation;
+import io.rainfall.jcache.operation.PutOperation;
+import io.rainfall.jcache.operation.RemoveOperation;
 
 /**
- * Contains the helper methods to instantiate the JCache {@link org.rainfall.Operation} objects.
+ * Contains the helper methods to instantiate the JCache {@link io.rainfall.Operation} objects.
  *
  * @author Aurelien Broszniowski
  */

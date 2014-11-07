@@ -1,25 +1,25 @@
-package org.rainfall.jcache.operation;
+package io.rainfall.jcache.operation;
 
-import org.rainfall.AssertionEvaluator;
-import org.rainfall.Configuration;
-import org.rainfall.ObjectGenerator;
-import org.rainfall.Operation;
-import org.rainfall.SequenceGenerator;
-import org.rainfall.TestException;
-import org.rainfall.jcache.CacheConfig;
-import org.rainfall.jcache.statistics.JCacheResult;
-import org.rainfall.statistics.Result;
-import org.rainfall.statistics.StatisticsObserversHolder;
-import org.rainfall.statistics.Task;
+import io.rainfall.AssertionEvaluator;
+import io.rainfall.Configuration;
+import io.rainfall.ObjectGenerator;
+import io.rainfall.Operation;
+import io.rainfall.SequenceGenerator;
+import io.rainfall.TestException;
+import io.rainfall.jcache.CacheConfig;
+import io.rainfall.statistics.Result;
+import io.rainfall.jcache.statistics.JCacheResult;
+import io.rainfall.statistics.StatisticsObserversHolder;
+import io.rainfall.statistics.Task;
 
 import java.util.List;
 import java.util.Map;
 
 import javax.cache.Cache;
 
-import static org.rainfall.jcache.statistics.JCacheResult.EXCEPTION;
-import static org.rainfall.jcache.statistics.JCacheResult.GET;
-import static org.rainfall.jcache.statistics.JCacheResult.MISS;
+import static io.rainfall.jcache.statistics.JCacheResult.EXCEPTION;
+import static io.rainfall.jcache.statistics.JCacheResult.GET;
+import static io.rainfall.jcache.statistics.JCacheResult.MISS;
 
 
 /**
