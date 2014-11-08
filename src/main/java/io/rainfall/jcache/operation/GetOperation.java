@@ -7,7 +7,6 @@ import io.rainfall.Operation;
 import io.rainfall.SequenceGenerator;
 import io.rainfall.TestException;
 import io.rainfall.jcache.CacheConfig;
-import io.rainfall.statistics.Result;
 import io.rainfall.jcache.statistics.JCacheResult;
 import io.rainfall.statistics.StatisticsObserversHolder;
 import io.rainfall.statistics.Task;
@@ -26,10 +25,10 @@ import static io.rainfall.jcache.statistics.JCacheResult.MISS;
  * @author Aurelien Broszniowski
  */
 
-public class GetOperation<K, V> extends Operation {
+public class GetOperation<K, V> extends Operation<JCacheResult> {
 
   @Override
-  public void exec(final StatisticsObserversHolder statisticsObserversHolder, final Map<Class<? extends Configuration>,
+  public void exec(final StatisticsObserversHolder<JCacheResult> statisticsObserversHolder, final Map<Class<? extends Configuration>,
       Configuration> configurations, final List<AssertionEvaluator> assertions) throws TestException {
 
     CacheConfig<K, V> cacheConfig = (CacheConfig<K, V>)configurations.get(CacheConfig.class);
@@ -41,10 +40,10 @@ public class GetOperation<K, V> extends Operation {
       final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
       for (final Cache<K, V> cache : caches) {
         statisticsObserversHolder
-            .measure(cache.getName(), JCacheResult.values(), new Task() {
+            .measure(cache.getName(), JCacheResult.class, new Task() {
 
               @Override
-              public Result definition() throws Exception {
+              public JCacheResult definition() throws Exception {
                 V value;
                 try {
                   value = cache.get(keyGenerator.generate(next));
