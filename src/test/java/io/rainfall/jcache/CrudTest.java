@@ -26,6 +26,7 @@ import io.rainfall.SyntaxException;
 import io.rainfall.configuration.ConcurrencyConfig;
 import io.rainfall.configuration.ReportingConfig;
 import io.rainfall.generator.StringGenerator;
+import io.rainfall.jcache.statistics.JCacheResult;
 import io.rainfall.utils.SystemTest;
 
 import java.util.concurrent.TimeUnit;
@@ -36,6 +37,7 @@ import javax.cache.configuration.MutableConfiguration;
 import javax.cache.expiry.Duration;
 import javax.cache.expiry.ModifiedExpiryPolicy;
 
+import static io.rainfall.configuration.ReportingConfig.*;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static io.rainfall.execution.Executions.nothingFor;
 import static io.rainfall.execution.Executions.times;
@@ -69,7 +71,7 @@ public class CrudTest {
         .weights(operation(PUT, 0.10), operation(GET, 0.80), operation(REMOVE, 0.10));
     ConcurrencyConfig concurrency = ConcurrencyConfig.concurrencyConfig()
         .threads(4).timeout(5, MINUTES);
-    ReportingConfig reporting = ReportingConfig.reportingConfig(ReportingConfig.text(), ReportingConfig.html());
+    ReportingConfig reporting = reportingConfig(JCacheResult.class, text(), html());
 
     Scenario scenario = Scenario.scenario("Cache load")
         .exec(put())
