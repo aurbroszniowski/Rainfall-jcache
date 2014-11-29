@@ -44,10 +44,6 @@ import static io.rainfall.execution.Executions.times;
 import static io.rainfall.jcache.JCacheOperations.get;
 import static io.rainfall.jcache.JCacheOperations.put;
 import static io.rainfall.jcache.JCacheOperations.remove;
-import static io.rainfall.jcache.operation.OperationWeight.OPERATION.GET;
-import static io.rainfall.jcache.operation.OperationWeight.OPERATION.PUT;
-import static io.rainfall.jcache.operation.OperationWeight.OPERATION.REMOVE;
-import static io.rainfall.jcache.operation.OperationWeight.operation;
 import static io.rainfall.unit.TimeDivision.seconds;
 
 /**
@@ -67,16 +63,15 @@ public class CrudTest {
     CacheConfig<String, byte[]> cacheConfig = CacheConfig.<String, byte[]>cacheConfig()
         .caches(one)
         .using(StringGenerator.fixedLength(10), ByteArrayGenerator.fixedLength(128))
-        .sequentially()
-        .weights(operation(PUT, 0.10), operation(GET, 0.80), operation(REMOVE, 0.10));
+        .sequentially();
     ConcurrencyConfig concurrency = ConcurrencyConfig.concurrencyConfig()
         .threads(4).timeout(5, MINUTES);
     ReportingConfig reporting = reportingConfig(JCacheResult.class, text(), html());
 
     Scenario scenario = Scenario.scenario("Cache load")
-        .exec(put())
-        .exec(get())
-        .exec(remove());
+        .exec(put().withWeight(0.10))
+        .exec(get().withWeight(0.80))
+        .exec(remove().withWeight(0.10));
 
     Runner.setUp(scenario)
         .executed(times(10000000), nothingFor(10, seconds))
