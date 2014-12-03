@@ -27,6 +27,7 @@ import io.rainfall.configuration.ConcurrencyConfig;
 import io.rainfall.configuration.ReportingConfig;
 import io.rainfall.generator.StringGenerator;
 import io.rainfall.jcache.statistics.JCacheResult;
+import io.rainfall.statistics.StatisticsPeekHolder;
 import io.rainfall.utils.SystemTest;
 
 import java.util.concurrent.TimeUnit;
@@ -73,7 +74,7 @@ public class CrudTest {
         .exec(get().withWeight(0.80))
         .exec(remove().withWeight(0.10));
 
-    Runner.setUp(scenario)
+    StatisticsPeekHolder finalStats = Runner.setUp(scenario)
         .executed(times(10000000), nothingFor(10, seconds))
         .config(cacheConfig, concurrency, reporting)
 //          .assertion(latencyTime(), isLessThan(1, seconds))
