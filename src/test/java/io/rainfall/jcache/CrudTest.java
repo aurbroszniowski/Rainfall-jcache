@@ -25,10 +25,13 @@ import io.rainfall.Scenario;
 import io.rainfall.SyntaxException;
 import io.rainfall.configuration.ConcurrencyConfig;
 import io.rainfall.configuration.ReportingConfig;
+import io.rainfall.generator.ByteArrayGenerator;
 import io.rainfall.generator.StringGenerator;
 import io.rainfall.jcache.statistics.JCacheResult;
 import io.rainfall.statistics.StatisticsPeekHolder;
 import io.rainfall.utils.SystemTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.concurrent.TimeUnit;
 
@@ -38,14 +41,16 @@ import javax.cache.configuration.MutableConfiguration;
 import javax.cache.expiry.Duration;
 import javax.cache.expiry.ModifiedExpiryPolicy;
 
-import static io.rainfall.configuration.ReportingConfig.*;
-import static java.util.concurrent.TimeUnit.MINUTES;
+import static io.rainfall.configuration.ReportingConfig.html;
+import static io.rainfall.configuration.ReportingConfig.reportingConfig;
+import static io.rainfall.configuration.ReportingConfig.text;
 import static io.rainfall.execution.Executions.nothingFor;
 import static io.rainfall.execution.Executions.times;
 import static io.rainfall.jcache.JCacheOperations.get;
 import static io.rainfall.jcache.JCacheOperations.put;
 import static io.rainfall.jcache.JCacheOperations.remove;
 import static io.rainfall.unit.TimeDivision.seconds;
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
  * @author Aurelien Broszniowski
@@ -70,9 +75,7 @@ public class CrudTest {
     ReportingConfig reporting = reportingConfig(JCacheResult.class, text(), html());
 
     Scenario scenario = Scenario.scenario("Cache load")
-        .exec(put().withWeight(0.10))
-        .exec(get().withWeight(0.80))
-        .exec(remove().withWeight(0.10));
+        .exec(put().withWeight(0.10), get().withWeight(0.80), remove().withWeight(0.10));
 
     StatisticsPeekHolder finalStats = Runner.setUp(scenario)
         .executed(times(10000000), nothingFor(10, seconds))

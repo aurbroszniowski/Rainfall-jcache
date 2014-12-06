@@ -41,8 +41,6 @@ import static io.rainfall.jcache.statistics.JCacheResult.PUT;
 
 public class PutOperation<K, V> extends Operation {
 
-  private double weight = 1;
-
   @Override
   public void exec(final StatisticsHolder statisticsHolder, final Map<Class<? extends Configuration>,
       Configuration> configurations, final List<AssertionEvaluator> assertions) throws TestException {
@@ -50,33 +48,23 @@ public class PutOperation<K, V> extends Operation {
     CacheConfig<K, V> cacheConfig = (CacheConfig<K, V>)configurations.get(CacheConfig.class);
     SequenceGenerator sequenceGenerator = cacheConfig.getSequenceGenerator();
     final long next = sequenceGenerator.next();
-    if (cacheConfig.getRandomizer().nextFloat(next) <= this.weight) {
-      List<Cache<K, V>> caches = cacheConfig.getCaches();
-      final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
-      final ObjectGenerator<V> valueGenerator = cacheConfig.getValueGenerator();
-      for (final Cache<K, V> cache : caches) {
-        statisticsHolder
-            .measure(cache.getName(), new Task() {
+    List<Cache<K, V>> caches = cacheConfig.getCaches();
+    final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
+    final ObjectGenerator<V> valueGenerator = cacheConfig.getValueGenerator();
+    for (final Cache<K, V> cache : caches) {
+      statisticsHolder
+          .measure(cache.getName(), new Task() {
 
-              @Override
-              public JCacheResult definition() throws Exception {
-                try {
-                  cache.put(keyGenerator.generate(next), valueGenerator.generate(next));
-                } catch (Exception e) {
-                  return EXCEPTION;
-                }
-                return PUT;
+            @Override
+            public JCacheResult definition() throws Exception {
+              try {
+                cache.put(keyGenerator.generate(next), valueGenerator.generate(next));
+              } catch (Exception e) {
+                return EXCEPTION;
               }
-            });
-      }
+              return PUT;
+            }
+          });
     }
-  }
-
-  public Operation withWeight(double weight) {
-    if (weight < 0 || weight > 1) {
-      throw new IllegalStateException("Operation weight should be between 0.01 and 1.00 (0 and 100%) and is " + weight);
-    }
-    this.weight = weight;
-    return this;
   }
 }
