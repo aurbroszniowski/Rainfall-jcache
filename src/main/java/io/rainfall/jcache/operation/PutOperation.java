@@ -23,23 +23,20 @@ import io.rainfall.Operation;
 import io.rainfall.SequenceGenerator;
 import io.rainfall.TestException;
 import io.rainfall.jcache.CacheConfig;
-import io.rainfall.jcache.statistics.JCacheResult;
 import io.rainfall.statistics.StatisticsHolder;
-import io.rainfall.statistics.Task;
 
 import java.util.List;
 import java.util.Map;
 
 import javax.cache.Cache;
 
-import static io.rainfall.jcache.statistics.JCacheResult.EXCEPTION;
-import static io.rainfall.jcache.statistics.JCacheResult.PUT;
-
 /**
  * @author Aurelien Broszniowski
  */
 
 public class PutOperation<K, V> extends Operation {
+
+  private PutOperationFunction<K, V> function = new PutOperationFunction<K, V>();
 
   @Override
   public void exec(final StatisticsHolder statisticsHolder, final Map<Class<? extends Configuration>,
@@ -52,19 +49,7 @@ public class PutOperation<K, V> extends Operation {
     final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
     final ObjectGenerator<V> valueGenerator = cacheConfig.getValueGenerator();
     for (final Cache<K, V> cache : caches) {
-      statisticsHolder
-          .measure(cache.getName(), new Task() {
-
-            @Override
-            public JCacheResult definition() throws Exception {
-              try {
-                cache.put(keyGenerator.generate(next), valueGenerator.generate(next));
-              } catch (Exception e) {
-                return EXCEPTION;
-              }
-              return PUT;
-            }
-          });
+      statisticsHolder.measure(cache.getName(), function.execute(cache, next, keyGenerator, valueGenerator));
     }
   }
 }
