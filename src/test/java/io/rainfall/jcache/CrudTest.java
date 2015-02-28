@@ -16,10 +16,6 @@
 
 package io.rainfall.jcache;
 
-import io.rainfall.generator.ByteArrayGenerator;
-import org.ehcache.jcache.JCacheConfiguration;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import io.rainfall.Runner;
 import io.rainfall.Scenario;
 import io.rainfall.SyntaxException;
@@ -30,6 +26,7 @@ import io.rainfall.generator.StringGenerator;
 import io.rainfall.jcache.statistics.JCacheResult;
 import io.rainfall.statistics.StatisticsPeekHolder;
 import io.rainfall.utils.SystemTest;
+import org.ehcache.jcache.JCacheConfiguration;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -42,7 +39,6 @@ import javax.cache.expiry.Duration;
 import javax.cache.expiry.ModifiedExpiryPolicy;
 
 import static io.rainfall.configuration.ReportingConfig.html;
-import static io.rainfall.configuration.ReportingConfig.reportingConfig;
 import static io.rainfall.configuration.ReportingConfig.text;
 import static io.rainfall.execution.Executions.nothingFor;
 import static io.rainfall.execution.Executions.times;
@@ -72,7 +68,7 @@ public class CrudTest {
         .sequentially();
     ConcurrencyConfig concurrency = ConcurrencyConfig.concurrencyConfig()
         .threads(4).timeout(5, MINUTES);
-    ReportingConfig reporting = reportingConfig(JCacheResult.class, text(), html());
+    ReportingConfig reporting = ReportingConfig.report(JCacheResult.class).log(text(), html()).summary(text());
 
     Scenario scenario = Scenario.scenario("Cache load")
         .exec(put().withWeight(0.10), get().withWeight(0.80), remove().withWeight(0.10));
