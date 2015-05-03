@@ -43,13 +43,13 @@ Use it in your project
     <dependency>
       <groupId>io.rainfall</groupId>
       <artifactId>rainfall-jcache</artifactId>
-      <version>1.0.3-SNAPSHOT</version>
+      <version>1.0.2</version>
     </dependency>
 
     <dependency>
       <groupId>io.rainfall</groupId>
       <artifactId>rainfall-core</artifactId>
-      <version>1.0.3-SNAPSHOT</version>
+      <version>1.0.3</version>
     </dependency>
   </dependencies>
 ```
