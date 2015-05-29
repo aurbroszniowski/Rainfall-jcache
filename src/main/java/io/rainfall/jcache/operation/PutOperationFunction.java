@@ -18,7 +18,6 @@ package io.rainfall.jcache.operation;
 
 import io.rainfall.ObjectGenerator;
 import io.rainfall.jcache.statistics.JCacheResult;
-import io.rainfall.statistics.FunctionExecutor;
 import io.rainfall.statistics.OperationFunction;
 
 import javax.cache.Cache;
@@ -29,20 +28,19 @@ import static io.rainfall.jcache.statistics.JCacheResult.PUT;
 /**
  * @author Aurelien Broszniowski
  */
-public class PutOperationFunction<K, V> extends OperationFunction<JCacheResult> {
+public class PutOperationFunction<K, V> implements OperationFunction<JCacheResult> {
 
   private Cache<K, V> cache;
   private long next;
   private ObjectGenerator<K> keyGenerator;
   private ObjectGenerator<V> valueGenerator;
 
-  public FunctionExecutor execute(final Cache<K, V> cache, final long next,
-                                  final ObjectGenerator<K> keyGenerator, final ObjectGenerator<V> valueGenerator) {
+  public PutOperationFunction(final Cache<K, V> cache, final long next,
+                              final ObjectGenerator<K> keyGenerator, final ObjectGenerator<V> valueGenerator) {
     this.cache = cache;
     this.next = next;
     this.keyGenerator = keyGenerator;
     this.valueGenerator = valueGenerator;
-    return this.functionExecutor;
   }
 
   @Override

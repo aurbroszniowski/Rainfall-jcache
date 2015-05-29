@@ -36,8 +36,6 @@ import javax.cache.Cache;
 
 public class RemoveOperation<K, V> extends Operation {
 
-  private RemoveOperationFunction<K, V> function = new RemoveOperationFunction<K, V>();
-
   @Override
   public void exec(final StatisticsHolder statisticsHolder, final Map<Class<? extends Configuration>,
       Configuration> configurations, final List<AssertionEvaluator> assertions) throws TestException {
@@ -49,7 +47,7 @@ public class RemoveOperation<K, V> extends Operation {
     final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
     for (final Cache<K, V> cache : caches) {
       statisticsHolder
-          .measure(cache.getName(), function.execute(cache, next, keyGenerator));
+          .measure(cache.getName(), new RemoveOperationFunction<K, V>(cache, next, keyGenerator));
     }
   }
 }

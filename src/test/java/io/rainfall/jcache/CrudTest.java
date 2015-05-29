@@ -68,7 +68,7 @@ public class CrudTest {
         .sequentially();
     ConcurrencyConfig concurrency = ConcurrencyConfig.concurrencyConfig()
         .threads(4).timeout(5, MINUTES);
-    ReportingConfig reporting = ReportingConfig.report(JCacheResult.class).log(text(), html()).summary(text());
+    ReportingConfig reporting = ReportingConfig.report(JCacheResult.class).log(text(), html());
 
     Scenario scenario = Scenario.scenario("Cache load")
         .exec(put().withWeight(0.10), get().withWeight(0.80), remove().withWeight(0.10));

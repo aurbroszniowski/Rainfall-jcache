@@ -36,8 +36,6 @@ import javax.cache.Cache;
 
 public class PutOperation<K, V> extends Operation {
 
-  private PutOperationFunction<K, V> function = new PutOperationFunction<K, V>();
-
   @Override
   public void exec(final StatisticsHolder statisticsHolder, final Map<Class<? extends Configuration>,
       Configuration> configurations, final List<AssertionEvaluator> assertions) throws TestException {
@@ -49,7 +47,7 @@ public class PutOperation<K, V> extends Operation {
     final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
     final ObjectGenerator<V> valueGenerator = cacheConfig.getValueGenerator();
     for (final Cache<K, V> cache : caches) {
-      statisticsHolder.measure(cache.getName(), function.execute(cache, next, keyGenerator, valueGenerator));
+      statisticsHolder.measure(cache.getName(), new PutOperationFunction<K, V>(cache, next, keyGenerator, valueGenerator));
     }
   }
 }
