@@ -30,6 +30,10 @@ import java.util.Map;
 
 import javax.cache.Cache;
 
+import static io.rainfall.jcache.statistics.JCacheResult.EXCEPTION;
+import static io.rainfall.jcache.statistics.JCacheResult.MISS;
+import static io.rainfall.jcache.statistics.JCacheResult.REMOVE;
+
 /**
  * @author Aurelien Broszniowski
  */
@@ -46,8 +50,20 @@ public class RemoveOperation<K, V> extends Operation {
     List<Cache<K, V>> caches = cacheConfig.getCaches();
     final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
     for (final Cache<K, V> cache : caches) {
-      statisticsHolder
-          .measure(cache.getName(), new RemoveOperationFunction<K, V>(cache, next, keyGenerator));
+      boolean removed;
+      long start = getTimeInNs();
+      try {
+        removed = cache.remove(keyGenerator.generate(next));
+        long end = getTimeInNs();
+        if (removed) {
+          statisticsHolder.record(cache.getName(), (end - start), REMOVE);
+        } else {
+          statisticsHolder.record(cache.getName(), (end - start), MISS);
+        }
+      } catch (Exception e) {
+        long end = getTimeInNs();
+        statisticsHolder.record(cache.getName(), (end - start), EXCEPTION);
+      }
     }
   }
 }

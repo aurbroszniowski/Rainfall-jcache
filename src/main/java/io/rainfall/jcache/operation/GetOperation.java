@@ -30,6 +30,10 @@ import java.util.Map;
 
 import javax.cache.Cache;
 
+import static io.rainfall.jcache.statistics.JCacheResult.EXCEPTION;
+import static io.rainfall.jcache.statistics.JCacheResult.GET;
+import static io.rainfall.jcache.statistics.JCacheResult.MISS;
+
 
 /**
  * @author Aurelien Broszniowski
@@ -47,7 +51,20 @@ public class GetOperation<K, V> extends Operation {
     List<Cache<K, V>> caches = cacheConfig.getCaches();
     final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
     for (final Cache<K, V> cache : caches) {
-      statisticsHolder.measure(cache.getName(), new GetOperationFunction<K, V>(cache, next, keyGenerator));
+      V value;
+      long start = getTimeInNs();
+      try {
+        value = cache.get(keyGenerator.generate(next));
+        long end = getTimeInNs();
+        if (value == null) {
+          statisticsHolder.record(cache.getName(), (end - start), MISS);
+        } else {
+          statisticsHolder.record(cache.getName(), (end - start), GET);
+        }
+      } catch (Exception e) {
+        long end = getTimeInNs();
+        statisticsHolder.record(cache.getName(), (end - start), EXCEPTION);
+      }
     }
   }
 }

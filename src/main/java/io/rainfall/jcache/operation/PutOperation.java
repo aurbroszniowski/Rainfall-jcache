@@ -24,17 +24,24 @@ import io.rainfall.SequenceGenerator;
 import io.rainfall.TestException;
 import io.rainfall.jcache.CacheConfig;
 import io.rainfall.statistics.StatisticsHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
 
 import javax.cache.Cache;
 
+import static io.rainfall.jcache.statistics.JCacheResult.EXCEPTION;
+import static io.rainfall.jcache.statistics.JCacheResult.PUT;
+
 /**
  * @author Aurelien Broszniowski
  */
 
 public class PutOperation<K, V> extends Operation {
+
+  private static final Logger log = LoggerFactory.getLogger(PutOperation.class);
 
   @Override
   public void exec(final StatisticsHolder statisticsHolder, final Map<Class<? extends Configuration>,
@@ -47,7 +54,15 @@ public class PutOperation<K, V> extends Operation {
     final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
     final ObjectGenerator<V> valueGenerator = cacheConfig.getValueGenerator();
     for (final Cache<K, V> cache : caches) {
-      statisticsHolder.measure(cache.getName(), new PutOperationFunction<K, V>(cache, next, keyGenerator, valueGenerator));
+      long start = getTimeInNs();
+      try {
+        cache.put(keyGenerator.generate(next), valueGenerator.generate(next));
+        long end = getTimeInNs();
+        statisticsHolder.record(cache.getName(), (end - start), PUT);
+      } catch (Exception e) {
+        long end = getTimeInNs();
+        statisticsHolder.record(cache.getName(), (end - start), EXCEPTION);
+      }
     }
   }
 }
