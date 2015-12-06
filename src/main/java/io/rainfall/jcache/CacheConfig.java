@@ -22,6 +22,7 @@ import io.rainfall.generator.IterationSequenceGenerator;
 import io.rainfall.utils.ConcurrentPseudoRandom;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -87,5 +88,10 @@ public class CacheConfig<K, V> extends Configuration {
 
   public ConcurrentPseudoRandom getRandomizer() {
     return randomizer;
+  }
+
+  @Override
+  public List<String> getDescription() {
+    return Arrays.asList("Using " + caches.size() + " cache" + (caches.size() > 1 ? "s" : ""));
   }
 }

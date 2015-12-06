@@ -25,6 +25,7 @@ import io.rainfall.TestException;
 import io.rainfall.jcache.CacheConfig;
 import io.rainfall.statistics.StatisticsHolder;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -65,5 +66,10 @@ public class RemoveOperation<K, V> extends Operation {
         statisticsHolder.record(cache.getName(), (end - start), EXCEPTION);
       }
     }
+  }
+
+  @Override
+  public List<String> getDescription() {
+    return Arrays.asList("remove(key)");
   }
 }

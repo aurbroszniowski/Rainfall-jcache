@@ -27,6 +27,7 @@ import io.rainfall.statistics.StatisticsHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -64,5 +65,10 @@ public class PutOperation<K, V> extends Operation {
         statisticsHolder.record(cache.getName(), (end - start), EXCEPTION);
       }
     }
+  }
+
+  @Override
+  public List<String> getDescription() {
+    return Arrays.asList("put(key, value)");
   }
 }
