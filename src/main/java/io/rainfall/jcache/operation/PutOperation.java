@@ -40,7 +40,7 @@ import static io.rainfall.jcache.statistics.JCacheResult.PUT;
  * @author Aurelien Broszniowski
  */
 
-public class PutOperation<K, V> extends Operation {
+public class PutOperation<K, V> implements Operation {
 
   private static final Logger log = LoggerFactory.getLogger(PutOperation.class);
 
@@ -55,13 +55,13 @@ public class PutOperation<K, V> extends Operation {
     final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
     final ObjectGenerator<V> valueGenerator = cacheConfig.getValueGenerator();
     for (final Cache<K, V> cache : caches) {
-      long start = getTimeInNs();
+      long start = statisticsHolder.getTimeInNs();
       try {
         cache.put(keyGenerator.generate(next), valueGenerator.generate(next));
-        long end = getTimeInNs();
+        long end = statisticsHolder.getTimeInNs();
         statisticsHolder.record(cache.getName(), (end - start), PUT);
       } catch (Exception e) {
-        long end = getTimeInNs();
+        long end = statisticsHolder.getTimeInNs();
         statisticsHolder.record(cache.getName(), (end - start), EXCEPTION);
       }
     }

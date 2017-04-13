@@ -39,7 +39,7 @@ import static io.rainfall.jcache.statistics.JCacheResult.REMOVE;
  * @author Aurelien Broszniowski
  */
 
-public class RemoveOperation<K, V> extends Operation {
+public class RemoveOperation<K, V> implements Operation {
 
   @Override
   public void exec(final StatisticsHolder statisticsHolder, final Map<Class<? extends Configuration>,
@@ -52,17 +52,17 @@ public class RemoveOperation<K, V> extends Operation {
     final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
     for (final Cache<K, V> cache : caches) {
       boolean removed;
-      long start = getTimeInNs();
+      long start = statisticsHolder.getTimeInNs();
       try {
         removed = cache.remove(keyGenerator.generate(next));
-        long end = getTimeInNs();
+        long end = statisticsHolder.getTimeInNs();
         if (removed) {
           statisticsHolder.record(cache.getName(), (end - start), REMOVE);
         } else {
           statisticsHolder.record(cache.getName(), (end - start), MISS);
         }
       } catch (Exception e) {
-        long end = getTimeInNs();
+        long end = statisticsHolder.getTimeInNs();
         statisticsHolder.record(cache.getName(), (end - start), EXCEPTION);
       }
     }

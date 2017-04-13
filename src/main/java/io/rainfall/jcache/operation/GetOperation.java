@@ -40,7 +40,7 @@ import static io.rainfall.jcache.statistics.JCacheResult.MISS;
  * @author Aurelien Broszniowski
  */
 
-public class GetOperation<K, V> extends Operation {
+public class GetOperation<K, V> implements Operation {
 
   @Override
   public void exec(final StatisticsHolder statisticsHolder, final Map<Class<? extends Configuration>,
@@ -53,17 +53,17 @@ public class GetOperation<K, V> extends Operation {
     final ObjectGenerator<K> keyGenerator = cacheConfig.getKeyGenerator();
     for (final Cache<K, V> cache : caches) {
       V value;
-      long start = getTimeInNs();
+      long start = statisticsHolder.getTimeInNs();
       try {
         value = cache.get(keyGenerator.generate(next));
-        long end = getTimeInNs();
+        long end = statisticsHolder.getTimeInNs();
         if (value == null) {
           statisticsHolder.record(cache.getName(), (end - start), MISS);
         } else {
           statisticsHolder.record(cache.getName(), (end - start), GET);
         }
       } catch (Exception e) {
-        long end = getTimeInNs();
+        long end = statisticsHolder.getTimeInNs();
         statisticsHolder.record(cache.getName(), (end - start), EXCEPTION);
       }
     }

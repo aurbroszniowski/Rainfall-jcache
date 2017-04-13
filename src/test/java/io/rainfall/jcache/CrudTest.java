@@ -38,6 +38,7 @@ import javax.cache.configuration.MutableConfiguration;
 import javax.cache.expiry.Duration;
 import javax.cache.expiry.ModifiedExpiryPolicy;
 
+import static io.rainfall.Scenario.weighted;
 import static io.rainfall.configuration.ReportingConfig.html;
 import static io.rainfall.configuration.ReportingConfig.text;
 import static io.rainfall.execution.Executions.nothingFor;
@@ -71,7 +72,10 @@ public class CrudTest {
     ReportingConfig reporting = ReportingConfig.report(JCacheResult.class).log(text(), html());
 
     Scenario scenario = Scenario.scenario("Cache load")
-        .exec(put().withWeight(0.10), get().withWeight(0.80), remove().withWeight(0.10));
+        .exec(
+            weighted(0.10, put()),
+            weighted(0.80, get()),
+            weighted(0.10, remove()));
 
     StatisticsPeekHolder finalStats = Runner.setUp(scenario)
         .executed(times(10000000), nothingFor(10, seconds))
