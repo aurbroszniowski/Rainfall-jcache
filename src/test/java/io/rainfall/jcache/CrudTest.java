@@ -65,7 +65,7 @@ public class CrudTest {
 
     CacheConfig<String, byte[]> cacheConfig = CacheConfig.<String, byte[]>cacheConfig()
         .caches(one)
-        .using(StringGenerator.fixedLength(10), ByteArrayGenerator.fixedLength(128))
+        .using(StringGenerator.fixedLengthString(10), ByteArrayGenerator.fixedLengthByteArray(128))
         .sequentially();
     ConcurrencyConfig concurrency = ConcurrencyConfig.concurrencyConfig()
         .threads(4).timeout(5, MINUTES);
