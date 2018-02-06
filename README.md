@@ -13,18 +13,6 @@ Rainfall is open to extensions, three of which are currently in progress,
 
 [![Build Status](https://rainfall.ci.cloudbees.com/buildStatus/icon?job=Rainfall jcache)](https://rainfall.ci.cloudbees.com/job/Rainfall%20jcache/)
 
-Components
-----------
-[Rainfall-core](https://github.com/aurbroszniowski/Rainfall-core) is the core library containing the key elements of the framework.
- When writing your framework implementation, you must include this library as a dependency.
-
-[Rainfall-web](https://github.com/aurbroszniowski/Rainfall-web) is the Web Application performance testing implementation.
-
-[Rainfall-jcache](https://github.com/aurbroszniowski/Rainfall-jcache) is the JSR107 caches performance testing implementation.
-
-[Rainfall-ehcache](https://github.com/aurbroszniowski/Rainfall-ehcache) is the Ehcache 2.x/3.x performance testing implementation.
-
-
 Quick start
 -----------
 
